@@ -11,8 +11,21 @@ public class SimplifiedRational implements IRational {
      * @return the greatest common denominator, or shared factor, of `a` and `b`
      * @throws IllegalArgumentException if a <= 0 or b < 0
      */
+
+    private int numerator;
+
+    private int denominator;
+
     public static int gcd(int a, int b) throws IllegalArgumentException {
-        throw new MissingImplementationException();
+        if (a <= 0 || b < 0) {
+            throw new IllegalArgumentException("Either a <= 0 or b < 0");
+        }
+        while (b > 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
     }
 
     /**
@@ -29,7 +42,12 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if the given denominator is 0
      */
     public static int[] simplify(int numerator, int denominator) throws IllegalArgumentException {
-        throw new MissingImplementationException();
+        if (denominator == 0) {
+            throw new IllegalArgumentException("The denominator is 0");
+        }
+
+        return new int[] {numerator / gcd(Math.abs(numerator), Math.abs(denominator)), denominator / gcd(Math.abs(numerator), Math.abs(denominator))};
+
     }
 
     /**
@@ -45,7 +63,18 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if the given denominator is 0
      */
     public SimplifiedRational(int numerator, int denominator) throws IllegalArgumentException {
-        throw new MissingImplementationException();
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator can't be 0");
+        }
+        if (numerator == 0) {
+            this.numerator = numerator;
+            this.denominator = denominator;
+        } else {
+            int[] simplified = simplify(numerator, denominator);
+
+            this.numerator = simplified[0];
+            this.denominator = simplified[1];
+        }
     }
 
     /**
@@ -53,7 +82,7 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public int getNumerator() {
-        throw new MissingImplementationException();
+        return this.numerator;
     }
 
     /**
@@ -61,7 +90,7 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public int getDenominator() {
-        throw new MissingImplementationException();
+        return this.denominator;
     }
 
     /**
@@ -77,7 +106,11 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public SimplifiedRational construct(int numerator, int denominator) throws IllegalArgumentException {
-        throw new MissingImplementationException();
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator is 0");
+        }
+
+        return new SimplifiedRational(numerator, denominator);
     }
 
     /**
@@ -88,7 +121,15 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public boolean equals(Object obj) {
-        throw new MissingImplementationException();
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        SimplifiedRational sObj = (SimplifiedRational) obj;
+        return sObj.getNumerator() == this.getNumerator() && sObj.getDenominator() == this.getDenominator();
     }
 
     /**
@@ -100,6 +141,12 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public String toString() {
-        throw new MissingImplementationException();
+        if (this.numerator < 0 && this.denominator > 0) {
+            return "-" + Integer.toString(Math.abs(this.numerator)) + "/" + Integer.toString(Math.abs(this.denominator));
+        } else if (this.numerator > 0 && this.denominator < 0) {
+            return "-" + Integer.toString(Math.abs(this.numerator)) + "/" + Integer.toString(Math.abs(this.denominator));
+        } else {
+            return Integer.toString(Math.abs(this.numerator)) + "/" + Integer.toString(Math.abs(this.denominator));
+        }
     }
 }

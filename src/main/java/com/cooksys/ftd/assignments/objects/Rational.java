@@ -14,8 +14,15 @@ public class Rational implements IRational {
      * @param denominator the denominator of the rational value
      * @throws IllegalArgumentException if the given denominator is 0
      */
+    private int numerator;
+    private int denominator;
+
     public Rational(int numerator, int denominator) throws IllegalArgumentException {
-        throw new MissingImplementationException();
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator is 0");
+        }
+        this.numerator = numerator;
+        this.denominator = denominator;
     }
 
     /**
@@ -23,7 +30,7 @@ public class Rational implements IRational {
      */
     @Override
     public int getNumerator() {
-        throw new MissingImplementationException();
+        return numerator;
     }
 
     /**
@@ -31,7 +38,7 @@ public class Rational implements IRational {
      */
     @Override
     public int getDenominator() {
-        throw new MissingImplementationException();
+        return denominator;
     }
 
     /**
@@ -47,7 +54,10 @@ public class Rational implements IRational {
      */
     @Override
     public Rational construct(int numerator, int denominator) throws IllegalArgumentException {
-        throw new MissingImplementationException();
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator is 0");
+        }
+        return new Rational(numerator, denominator);
     }
 
     /**
@@ -58,7 +68,15 @@ public class Rational implements IRational {
      */
     @Override
     public boolean equals(Object obj) {
-        throw new MissingImplementationException();
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Rational rObj = (Rational) obj;
+        return rObj.getNumerator() == this.getNumerator() && rObj.getDenominator() == this.getDenominator();
     }
 
     /**
@@ -70,6 +88,12 @@ public class Rational implements IRational {
      */
     @Override
     public String toString() {
-        throw new MissingImplementationException();
+        if (this.numerator < 0 && this.denominator > 0) {
+            return "-" + Integer.toString(Math.abs(this.numerator)) + "/" + Integer.toString(Math.abs(this.denominator));
+        } else if (this.numerator > 0 && this.denominator < 0) {
+            return "-" + Integer.toString(Math.abs(this.numerator)) + "/" + Integer.toString(Math.abs(this.denominator));
+        } else {
+            return Integer.toString(Math.abs(this.numerator)) + "/" + Integer.toString(Math.abs(this.denominator));
+        }
     }
 }

@@ -54,7 +54,10 @@ interface IRational {
 	 *             if the numerator of this rational value is 0
 	 */
 	default IRational invert() throws IllegalStateException {
-		throw new MissingImplementationException();
+		if (getNumerator() == 0) {
+			throw new IllegalStateException("Numerator is 0");
+		}
+		return construct(getDenominator(), getNumerator());
 	}
 
 	/**
@@ -69,7 +72,13 @@ interface IRational {
 	 *             if that is null
 	 */
 	default IRational add(IRational that) throws IllegalArgumentException {
-		throw new MissingImplementationException();
+		if (that == null) {
+			throw new IllegalArgumentException("that is null");
+		}
+		int numerator = (getNumerator() * that.getDenominator()) + (that.getNumerator() * getDenominator());
+		int denominator = getDenominator() * that.getDenominator();
+
+		return construct(numerator, denominator);
 	}
 
 	/**
@@ -84,7 +93,13 @@ interface IRational {
 	 *             if that is null
 	 */
 	default IRational sub(IRational that) throws IllegalArgumentException {
-		throw new MissingImplementationException();
+		if (that == null) {
+			throw new IllegalArgumentException("that is null");
+		}
+		int numerator = (getNumerator() * that.getDenominator()) - (that.getNumerator() * getDenominator());
+		int denominator = getDenominator() * that.getDenominator();
+
+		return construct(numerator, denominator);
 	}
 
 	/**
@@ -99,7 +114,14 @@ interface IRational {
 	 *             if that is null
 	 */
 	default IRational mul(IRational that) throws IllegalArgumentException {
-		throw new MissingImplementationException();
+		if (that == null) {
+			throw new IllegalArgumentException("that is null");
+		}
+
+		int numerator = getNumerator() * that.getNumerator();
+		int denominator = getDenominator() * that.getDenominator();
+
+		return construct(numerator, denominator);
 	}
 
 	/**
@@ -114,6 +136,12 @@ interface IRational {
 	 *             if that is null or if the numerator of that is 0
 	 */
 	default IRational div(IRational that) throws IllegalArgumentException {
-		throw new MissingImplementationException();
+		if (that == null || that.getNumerator() == 0) {
+			throw new IllegalArgumentException("that is null or that's numerator is 0");
+		}
+		int numerator = getNumerator() * that.getDenominator();
+		int denominator = getDenominator() * that.getNumerator();
+
+		return construct(numerator, denominator);
 	}
 }
